@@ -1,0 +1,210 @@
+
+
+head {
+  font-size: 50px;
+}
+
+body {
+
+  color: rgb(250, 193, 122);
+  font-family: "Ubuntu", sans-serif;
+  overflow: auto;
+  background-size: cover; /* scale the background image to cover the entire element */
+  background-repeat: no-repeat; /* do not repeat the background image */
+  text-align: center; /* center text */
+}
+
+#background-one, #background-two {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  transition: opacity 1s ease;
+}
+
+#background-one {
+    z-index: -1;
+    background-image: url('/static/images/space.jpg');
+}
+#background-two {
+    z-index: -2;
+    opacity: 0;
+    background-image: url('/static/images/hester.jpg');
+}
+img {
+  background-blend-mode: screen; /* fade the edge of the image into the background image */
+  width: 30%; /* half the width of the screen */
+}
+
+button {
+  font-size: 2em; /* 10 times the size of the default font */
+  display: block;
+  margin: auto;
+}
+
+.info {
+  color:black
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  font-size: 40px;
+  float: left;
+  padding: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color:rgba(23, 23, 23, 0.325);
+  border-bottom: 1px solid rgb(113, 113, 113);
+  position: fixed; /* fix the position of the navbar */
+  top: 0; /* align the navbar to the top of the screen */
+  width: 100%; /* make the navbar take up the full width of the screen */
+  z-index: 1; /* ensure the navbar is on top of other elements */
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  padding-top: 40px;
+}
+
+/* Left and right column */
+.column.side {
+  width: 25%;
+}
+
+/* Middle column */
+.column.middle {
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+
+.scrollContainer {
+  height: 300vh; /* 3 times the height of the viewport */
+}
+
+img[alt="Mortal Kombat"] {
+  margin-left: 30px;
+  transition: transform 0.5s;
+  transform: scale(1);
+  animation-play-state: paused;
+  margin-bottom: 20px;
+}
+
+img[alt="Mortal Kombat"]:hover {
+  animation: pulse 1s infinite;
+  animation-play-state: running;
+}
+
+img[alt="Image button"] {
+  margin-right: 30px;
+  transition: transform 0.5s;
+  transform: scale(1);
+  animation-play-state: paused;
+  margin-bottom: 20px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+img[alt="Image button"]:hover {
+  animation: pulse 1s infinite;
+  animation-play-state: running;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.scroll-bar {
+  position: fixed; /* fix the position of the bar */
+  top: 0; /* align the bar to the top of the screen */
+  left: 0; /* align the bar to the left of the screen */
+  height: 5px; /* set the height of the bar */
+  width: 0%; /* set the initial width of the bar */
+  background-color: #ffe9caac; /* set the background color of the bar */
+  z-index: 2; /* ensure the bar is above the navbar */
+}
+
+.button-container {
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  align-items: center; /* align the buttons vertically in the center of the container */
+  align-content: center; /* center the whole row of elements */
+  margin-bottom: 40px;
+}
+
+.button-container img {
+  width: 400px; /* set a specific width for the images*/
+}
+
+.Mortal_Kombat {
+  visibility: hidden;
+  font-size: 1.5em;
+  color: rgb(255, 255, 255);
+  position: absolute;
+  justify-content: center;
+  margin-left: 80px;
+}
+
+.Mortal:hover .Mortal_Kombat {
+  visibility: visible;
+}
+
+.Quiz_game {
+  visibility: hidden;
+  font-size: 1.5em;
+  color: rgb(255, 255, 255);
+  position: absolute;
+  justify-content: center;
+  margin-left: 100px;
+}
+
+.Quizz:hover .Quiz_game {
+  visibility: visible;
+}
+
