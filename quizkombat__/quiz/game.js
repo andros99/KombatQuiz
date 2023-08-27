@@ -19,15 +19,12 @@ const fetchQuestions = async () => {
         const response = await fetch('https://opentdb.com/api.php?amount=4&type=multiple');
         const data = await response.json();
         
-        // Transform the API's question format to match your game's format
         questions = data.results.map(q => {
-            // Combine the correct answer with the incorrect answers
+
             let combinedAnswers = [q.correct_answer, ...q.incorrect_answers];
             
-            // Shuffle the answers
             combinedAnswers = combinedAnswers.sort(() => 0.5 - Math.random());
             
-            // Determine the index of the correct answer in the shuffled array
             const answerIndex = combinedAnswers.indexOf(q.correct_answer) + 1;
             
             return {
@@ -42,17 +39,14 @@ const fetchQuestions = async () => {
         
         availableQuestions = [...questions];
         
-        // Start the game once the questions are fetched and processed
+        // Start the game
         startGame();
     } catch (error) {
         console.error("Error fetching questions:", error);
     }
 }
 
-// Fetch questions immediately to get the initial set of questions
 fetchQuestions();
-
-// ... rest of your code ...
 
 startGame = () => {
     questionCounter = 0;
