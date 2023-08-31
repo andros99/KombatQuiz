@@ -1,189 +1,184 @@
-const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
+const gameCanvas = document.querySelector('canvas');
+const ctx = gameCanvas.getContext('2d');
 
-canvas.width = 1024
-canvas.height = 576
+gameCanvas.width = 1024;
+gameCanvas.height = 576;
 
-c.fillRect(0, 0, canvas.width, canvas.height)
+ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
 
-const gravity = 0.7
+const pullForce = 0.7;
 
-class Sprite {
-    constructor({position, velocity, color = 'red', offset} ) {
-        this.position = position
-        this.velocity = velocity
-        this.width = 50
-        this.height = 150
-        this.lastKey
-        this.attackBox = {
-            position: {
-                x: this.position.x,
-                y: this.position.y
+class Spwnsprite {
+    constructor({pos, speed, tint = 'red', offset}) {
+        this.pos = pos;
+        this.speed = speed;
+        this.dimWidth = 50;
+        this.dimHeight = 150;
+        this.recentKey;
+        this.strikeArea = {
+            pos: {
+                x: this.pos.x,
+                y: this.pos.y
             },
             offset,
-            width: 100,
-            height: 50,
-        }
-        this.color = color
-        this.isAttacking
-        this.health = 100
+            dimWidth: 100,
+            dimHeight: 50,
+        };
+        this.tint = tint;
+        this.striking;
+        this.vitality = 100;
     }
-    draw() {
-        c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+    render() {
+        ctx.fillStyle = this.tint;
+        ctx.fillRect(this.pos.x, this.pos.y, this.dimWidth, this.dimHeight);
 
-        // attack box
-        if (this.isAttacking) {
-        c.fillStyle = 'green'
-        c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
+        if (this.striking) {
+            ctx.fillStyle = 'green';
+            ctx.fillRect(this.strikeArea.pos.x, this.strikeArea.pos.y, this.strikeArea.dimWidth, this.strikeArea.dimHeight);
         }
     }
-    update() {
-        this.draw()
-        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
+    refresh() {
+        this.render();
+        this.strikeArea.pos.x = this.pos.x + this.strikeArea.offset.x;
+        this.strikeArea.pos.y = this.pos.y;
         
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
+        this.pos.x += this.speed.x;
+        this.pos.y += this.speed.y;
 
-        if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-            this.velocity.y = 0
-        } else this.velocity.y += gravity
+        if (this.pos.y + this.dimHeight + this.speed.y >= gameCanvas.height) {
+            this.speed.y = 0;
+        } else this.speed.y += pullForce;
     }
-    attack() {
-        this.isAttacking = true
+    strike() {
+        this.striking = true;
         setTimeout(() => {
-            this.isAttacking = false
+            this.striking = false;
         }, 100);
     }
 }
 
-const player = new Sprite({
-    position: {
-    x: 0,
-    y: 0
+const mainPlayer = new Character({
+    pos: {
+        x: 0,
+        y: 0
     },
-    velocity: {
-    x: 0,
-    y: 10
+    speed: {
+        x: 0,
+        y: 10
     },
     offset: {
         x: 0,
         y: 0
     }
-})
+});
 
-const enemy = new Sprite({
-    position: {
-    x: 400,
-    y: 100
+const adversary = new Character({
+    pos: {
+        x: 400,
+        y: 100
     },
-    velocity: {
-    x: 0,
-    y: 0
+    speed: {
+        x: 0,
+        y: 0
     },
-    color: 'blue',
+    tint: 'blue',
     offset: {
         x: -50,
         y: 0
     }
-})
+});
 
-console.log()
+console.log();
 
-const keys = {
+const inputKeys = {
     a: {
-        pressed: false
+        active: false
     },
     d: {
-        pressed: false
+        active: false
     },
     ArrowRight: {
-        pressed: false
+        active: false
     },
     ArrowLeft: {
-        pressed: false
+        active: false
     },
-}
+};
 
-function rectangularCollision({rectangle1, rectangle2}) {
+function collisionDetection({char1, char2}) {
     return (
-    rectangle1.attackBox.position.x + rectangle1.attackBox.width >= rectangle2.position.x && 
-    rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width && 
-    rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y && 
-    rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
-    )
+        char1.strikeArea.pos.x + char1.strikeArea.dimWidth >= char2.pos.x && 
+        char1.strikeArea.pos.x <= char2.pos.x + char2.dimWidth && 
+        char1.strikeArea.pos.y + char1.strikeArea.dimHeight >= char2.pos.y && 
+        char1.strikeArea.pos.y <= char2.pos.y + char2.dimHeight
+    );
 }
 
-let timer = 5
-function decreaseTimer() {
-    setTimeout(decreaseTimer, 1000)
-    if (timer > 0) {
-        timer--
-        document.querySelector('#timer').innerHTML = timer
+let countdown = 5;
+function countdownTimer() {
+    setTimeout(countdownTimer, 1000);
+    if (countdown > 0) {
+        countdown--;
+        document.querySelector('#timer').innerHTML = countdown;
     }
-    if (timer === 0) {
-        document.querySelector('#displayText').style.display = 'flex'
-        if (player.health === enemy.health) {
-            document.querySelector('#displayText').innerHTML = 'Tie'
-        } else if (player.health > enemy.health) {
-            document.querySelector('#displayText').innerHTML = 'Player 1 Wins'
-        } else if (player.health < enemy.health) {
-            document.querySelector('#displayText').innerHTML = 'Player 2 Wins'
+    if (countdown === 0) {
+        document.querySelector('#resultDisplay').style.display = 'flex';
+        if (mainPlayer.vitality === adversary.vitality) {
+            document.querySelector('#resultDisplay').innerHTML = 'Tie';
+        } else if (mainPlayer.vitality > adversary.vitality) {
+            document.querySelector('#resultDisplay').innerHTML = 'Player 1 Wins';
+        } else if (mainPlayer.vitality < adversary.vitality) {
+            document.querySelector('#resultDisplay').innerHTML = 'Player 2 Wins';
         }
     }
 }
 
+countdownTimer();
 
-decreaseTimer()
+function initkombat() {
+    window.requestAnimationFrame(initkombat);
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+    mainPlayer.refresh();
+    adversary.refresh();
 
-function animate() {
-    window.requestAnimationFrame(animate)
-    c.fillStyle = 'black'
-    c.fillRect(0, 0, canvas.width, canvas.height)
-    player.update()
-    enemy.update()
+    mainPlayer.speed.x = 0;
+    adversary.speed.x = 0;
 
-    player.velocity.x = 0
-    enemy.velocity.x = 0
-
-    //  movement
-    if (keys.a.pressed && player.lastKey === 'a') {
-        player.velocity.x = -5
-    } else if (keys.d.pressed && player.lastKey === 'd') {
-        player.velocity.x = 5
+    if (inputKeys.a.active && mainPlayer.recentKey === 'a') {
+        mainPlayer.speed.x = -5;
+    } else if (inputKeys.d.active && mainPlayer.recentKey === 'd') {
+        mainPlayer.speed.x = 5;
     }
 
-    // enemy movement
-    if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 5
-    } else if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-        enemy.velocity.x = -5
+    if (inputKeys.ArrowRight.active && adversary.recentKey === 'ArrowRight') {
+        adversary.speed.x = 5;
+    } else if (inputKeys.ArrowLeft.active && adversary.recentKey === 'ArrowLeft') {
+        adversary.speed.x = -5;
     }
 
-    // detect for collision
-    if (rectangularCollision({
-        rectangle1: player,
-        rectangle2: enemy
+    if (collisionDetection({
+        char1: mainPlayer,
+        char2: adversary
     })
-        && player.isAttacking) {
-        player.isAttacking = false
-        enemy.health -= 20
-        document.querySelector('#enemyHealth').style.width = enemy.health + "%"
+        && mainPlayer.striking) {
+        mainPlayer.striking = false;
+        adversary.vitality -= 20;
+        document.querySelector('#adversaryVitality').style.width = adversary.vitality + "%";
     }
 
-    if (rectangularCollision({
-        rectangle1: enemy,
-        rectangle2: player
+    if (collisionDetection({
+        char1: adversary,
+        char2: mainPlayer
     })
-        && enemy.isAttacking) {
-        enemy.isAttacking = false
-        player.health -= 20
-        document.querySelector('#playerHealth').style.width = player.health + "%"
+        && adversary.striking) {
+        adversary.striking = false;
+        mainPlayer.vitality -= 20;
+        document.querySelector('#playerVitality').style.width = mainPlayer.vitality + "%";
     }
 }
 
-animate()
+initkombat();
 
 window.addEventListener('keydown', (event) => {
     switch (event.key) {
