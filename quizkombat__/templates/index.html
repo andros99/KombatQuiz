@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Current Weather</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <h1>Current Weather in {{ weather.city }}</h1>
+        <div class="weather-container">
+            <p>{{ weather.description }}</p>
+            <p>Temperature: {{ weather.temperature }}&deg;C</p>
+            <p>Humidity: {{ weather.humidity }}%</p>
+            <p>Pressure: {{ weather.pressure }} hPa</p>
+            <p>Visibility: {{ weather.visibility }} km</p>
+            <p>Wind Speed: {{ weather.wind_speed }} m/s</p>
+            <p>Wind Direction: {{ weather.wind_direction }}&deg;</p>
+        </div>
+        <div><img src="{{ url_for('static', filename='season-2.png') }}" alt="weather icon"></div>
+    </body>
+</html>
