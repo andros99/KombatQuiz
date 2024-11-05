@@ -1,1 +1,1 @@
-Website for friends with Mortal Kombat clone and randomly generated trivia-quiz.
+Website for friends with 2D Mortal Kombat and randomly generated trivia-quiz.
